@@ -1,0 +1,9 @@
+{
+	"tile": "chest",
+	"items": [
+		{
+			"item": "air",
+			"count": 1
+		}
+	]
+}

@@ -1,0 +1,9 @@
+{
+  "item": {
+    "name": "Air",
+    "max-count": 1,
+    "extraInfo": [
+      "untextured"
+    ]
+  }
+}

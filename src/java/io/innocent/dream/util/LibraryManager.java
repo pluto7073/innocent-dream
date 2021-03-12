@@ -82,7 +82,7 @@ public class LibraryManager {
             ZipFile zipFile = new ZipFile(libsZip);
             for (String s : libs) {
                 System.out.println("Extracting " + s + "...");
-                String libPath = path + "\\" + s;
+                String libPath = path;
                 zipFile.extractFile(s, libPath);
             }
         } catch (Exception e) {

@@ -1,8 +1,8 @@
 package io.innocent.dream.actions;
 
 import io.innocent.dream.InnocentDream;
+import io.innocent.dream.util.DisplayManager;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import javax.imageio.ImageIO;
@@ -13,12 +13,14 @@ import java.nio.ByteBuffer;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class ScreenshotAction extends AbstractAction {
+public class ScreenshotAction extends Action {
 
     public boolean ready = false;
+    public static boolean shouldShowText = false;
+    public static int i = 0;
 
     public ScreenshotAction() {
-        super(GLFW.GLFW_KEY_F2);
+        super("key_screenshot");
     }
 
     @Override
@@ -30,8 +32,8 @@ public class ScreenshotAction extends AbstractAction {
     public void afterActionPreformed() {
         if (ready) {
             GL11.glReadBuffer(GL11.GL_FRONT);
-            int width = InnocentDream.WIDTH;
-            int height = InnocentDream.HEIGHT;
+            int width = DisplayManager.WIDTH;
+            int height = DisplayManager.HEIGHT;
             int bpp = 4;
             ByteBuffer buffer = BufferUtils.createByteBuffer(width * height * bpp);
             GL11.glReadPixels(0, 0, width, height, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer );
@@ -40,7 +42,7 @@ public class ScreenshotAction extends AbstractAction {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yy-HH-mm-ss");
             String fileName = LocalDateTime.now().format(formatter) + ".png";
-            File file = new File( "screenshots\\" + fileName);
+            File file = new File(InnocentDream.path + "\\screenshots\\" + fileName);
             String format = "PNG";
             BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
@@ -59,12 +61,14 @@ public class ScreenshotAction extends AbstractAction {
                 e.printStackTrace();
             }
             System.out.println("Took Screenshot " + fileName);
+            shouldShowText = true;
+            i = 0;
         }
         ready = false;
     }
 
     private static void testDir() {
-        File screenshotDir = new File("screenshots");
+        File screenshotDir = new File(InnocentDream.path + "\\screenshots");
         if (!screenshotDir.exists()) {
             screenshotDir.mkdirs();
         }

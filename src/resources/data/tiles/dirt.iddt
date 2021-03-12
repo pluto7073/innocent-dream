@@ -1,0 +1,9 @@
+{
+  "tile": "dirt",
+  "items": [
+      {
+          "item": "dirt",
+          "count": 1
+      }
+  ]
+}

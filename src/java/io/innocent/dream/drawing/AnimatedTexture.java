@@ -12,13 +12,17 @@ public class AnimatedTexture extends Texture {
 
     private final int width;
     private final int height;
-    private List<Frame> frames;
+    private final List<Frame> frames;
 
     public AnimatedTexture(String texturePath, int width, int height) {
         super(texturePath);
         this.width = width;
         this.height = height;
         frames = new ArrayList<>();
+    }
+    
+    public List<Frame> getFrames() {
+    	return frames;
     }
 
     @Override
@@ -32,8 +36,8 @@ public class AnimatedTexture extends Texture {
     }
 
     public class Frame extends Texture {
-        private int x;
-        private int y;
+        private final int x;
+        private final int y;
 
         public Frame(String texturePath, int x, int y) {
             super(texturePath);
@@ -41,7 +45,15 @@ public class AnimatedTexture extends Texture {
             this.y = y;
         }
 
-        @Override
+        int getX() {
+			return x;
+		}
+
+		int getY() {
+			return y;
+		}
+
+		@Override
         protected void generateTexture() throws IOException {
 
         }

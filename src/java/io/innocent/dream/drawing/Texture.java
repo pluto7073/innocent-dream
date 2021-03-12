@@ -1,9 +1,6 @@
 package io.innocent.dream.drawing;
 
-import io.innocent.dream.InnocentDream;
-
 import java.io.IOException;
-import java.io.InputStream;
 
 public class Texture {
 
@@ -19,8 +16,17 @@ public class Texture {
         }
     }
 
+    public Texture(String texturePath, int x, int y, int w, int h) {
+        this.texturePath = texturePath;
+        generateTexture(x, y, w, h);
+    }
+
     protected void generateTexture() throws IOException {
         textureID = TextureRenderer.loadTexture(texturePath);
+    }
+
+    protected void generateTexture(int x, int y, int w, int h) {
+        textureID = TextureRenderer.loadTextureFromSectionOfImage(texturePath, x, y, w, h);
     }
 
     public int getTextureID() {

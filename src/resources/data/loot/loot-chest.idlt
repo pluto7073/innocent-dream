@@ -1,0 +1,36 @@
+{
+	"loot": {
+		"rolls": 2,
+		"items": [
+			{
+				"item": "dirt",
+				"chance": 0.5,
+				"count": {
+					"type": "INT",
+					"values": [2]
+				}
+			},
+			{
+				"item": "grass",
+				"chance": 0.25,
+				"count": {
+					"type": "CHANCE",
+					"values": [
+						5, 6, 2, 
+						11, 82, 12
+					]
+				}
+			},
+			{
+				"item": "stone",
+				"chance": 0.25,
+				"count": {
+					"type": "RANGE",
+					"values": [
+						72, 100
+					]
+				}
+			}
+		]
+	}
+}
