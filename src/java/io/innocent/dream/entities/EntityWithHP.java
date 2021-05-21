@@ -7,8 +7,8 @@ public abstract class EntityWithHP extends Entity {
     protected float hp;
     protected boolean dead = false;
 
-    public EntityWithHP(Texture texture, float hp) {
-        super(texture);
+    public EntityWithHP(Texture texture, float hp, String uid) {
+        super(texture, uid);
         this.hp = hp;
     }
 

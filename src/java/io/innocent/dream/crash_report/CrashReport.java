@@ -168,5 +168,41 @@ public class CrashReport {
         if (shouldExit) System.exit(0);
         return file.getAbsolutePath();
     }
+    
+    public String createCrashReport(Throwable t, String optionalMessage) {
+        CrashReportBuilder builder = new CrashReportBuilder(err, t);
+        String stackTrace = builder.createStackTrace(optionalMessage);
+        String systemInfo = builder.getSystemInformation();
+        int r = new Random().nextInt(MESSAGES.length);
+        String message = MESSAGES[r];
+        StringBuilder reportBuilder = new StringBuilder("Crash Report:\n\n//");
+        reportBuilder.append(message);
+        reportBuilder.append("\n\n== Stack Trace ==\n")
+                .append(stackTrace);
+        reportBuilder.append("\n== System Information ==\n").append(systemInfo)
+                .append("\n");
+        reportBuilder.append("\n== Created By Innocent Dream ==");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd_MM_yyyy_HH_mm_ss");
+        LocalDateTime time = LocalDateTime.now();
+        String formattedTime = time.format(formatter);
+        if (hasParent) {
+            parent.setVisible(false);
+            JOptionPane.showMessageDialog(parent, t.toString(), "An Error has Occurred", JOptionPane.ERROR_MESSAGE);
+        }
+        filepath = InnocentDream.path + "\\crash_reports";
+        File file = new File(filepath);
+        file.mkdirs();
+        file = new File(filepath + "\\" + formattedTime + ".txt");
+        try {
+            file.createNewFile();
+            FileWriter writer = new FileWriter(file);
+            writer.write(reportBuilder.toString());
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (shouldExit) System.exit(0);
+        return file.getAbsolutePath();
+    }
 
 }

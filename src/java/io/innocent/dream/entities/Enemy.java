@@ -16,8 +16,8 @@ public abstract class Enemy extends EntityWithHP {
     public static final float SPEED = 0.5f;
     public static final float JUMP_SPEED = 2.5f;
 
-    public Enemy(Texture texture, int killScore, int hp, float attackDamage) {
-        super(texture, hp);
+    public Enemy(Texture texture, int killScore, int hp, float attackDamage, String uid) {
+        super(texture, hp, uid);
         this.killScore = killScore;
         this.attackDamage = attackDamage;
     }

@@ -35,7 +35,7 @@ public class Player extends EntityWithHP {
     public PlayerInventory inventory;
 
     public Player() {
-        super(new Texture("assets/entities/character.png"), 20f);
+        super(new Texture("assets/entities/character.png"), 20f, "9deeae54-b5c3-11eb-8529-0242ac130003");
         position = new Vector2f(0, 128);
         side = new Texture("assets/entities/character_side.png");
         inventory = new PlayerInventory();

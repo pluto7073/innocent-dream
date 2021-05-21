@@ -155,7 +155,7 @@ public class GameAPIManager {
             object.put("score", score);
             String playerData = object.toJSONString();
             System.out.println(playerData);
-            gameAPI.setDataStore(DataStore.DataStoreType.GAME, username, playerData);
+            gameAPI.setDataStore(DataStore.DataStoreType.GAME, String.valueOf(currentUser.getId()), playerData);
             gameAPI.sessionClose();
             System.out.println("Successfully closed session");
         } catch (Exception e) {

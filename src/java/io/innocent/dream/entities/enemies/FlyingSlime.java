@@ -20,7 +20,7 @@ public class FlyingSlime extends Enemy {
     public final List<FlyingSlime> instances = new ArrayList<>();
 
     public FlyingSlime() {
-        super(new Texture("assets/entities/enemies/flying_slime.png"), 10, 5, 2.5f);
+        super(new Texture("assets/entities/enemies/flying_slime.png"), 10, 5, 2.5f, InnocentDream.generateUID(WorldBuilder.WORLD_GENERATION_RANDOM));
         position = new Vector2f(0, 0);
     }
 

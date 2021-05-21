@@ -10,14 +10,17 @@ import org.json.simple.parser.ParseException;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.Scanner;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
-public class Item {
+public class Item implements Serializable {
 
-    public static final class ItemInfoBuilder {
+	private static final long serialVersionUID = 8806439160390533270L;
+
+	public static final class ItemInfoBuilder {
         private final InputStream infoFile;
         public ItemInfoBuilder(InputStream infoFile) {
             this.infoFile = infoFile;
@@ -42,8 +45,9 @@ public class Item {
         }
     }
 
-    public static final class Settings {
-        private final String displayName;
+    public static final class Settings implements Serializable {
+		private static final long serialVersionUID = -7235939494304583297L;
+		private final String displayName;
         private final int maxCount;
         private final JSONArray extraInfo;
         public Settings(String displayName, int maxCount, JSONArray extraInfo) {

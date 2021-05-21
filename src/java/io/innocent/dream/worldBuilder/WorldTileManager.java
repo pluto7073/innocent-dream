@@ -4,6 +4,8 @@ import io.innocent.dream.entities.Entities;
 import io.innocent.dream.registry.Registry;
 import io.innocent.dream.tile.Tile;
 import io.innocent.dream.util.DisplayManager;
+import io.innocent.dream.worldBuilder.biomes.Biome;
+
 import org.joml.Vector2f;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -82,6 +84,13 @@ public class WorldTileManager {
         y = Math.max(y, MIN_Y);
         y = Math.min(y, MAX_Y);
         return y;
+    }
+    
+    public static void setBiomeAtPosition(Biome biome, int x) {
+    	for (int i = MIN_Y; i < MAX_Y + 1; i++) {
+    		WorldPos pos = WorldBuilder.WORLD_DATA[x][i];
+    		pos.setBiome(biome);
+    	}
     }
 
 }

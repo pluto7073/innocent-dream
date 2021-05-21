@@ -6,6 +6,7 @@ import io.innocent.dream.exceptions.ActionNotFoundException;
 import io.innocent.dream.exceptions.ItemNotFoundException;
 import io.innocent.dream.item.Item;
 import io.innocent.dream.tile.Tile;
+import io.innocent.dream.worldBuilder.biomes.Biome;
 import io.innocent.dream.exceptions.TileNotFoundException;
 
 import java.util.HashMap;
@@ -17,18 +18,21 @@ public class Registry {
     private static final HashMap<String, Action> actionsRegistry = new HashMap<>();
     private static final HashMap<String, Entity> entitiesRegistry = new HashMap<>();
     private static final HashMap<String, Item> itemsRegistry = new HashMap<>();
+    private static final HashMap<Integer, Biome> biomeRegistry = new HashMap<>();
 
     private Registry(){}
 
-    public static <T, V extends T> V register(String id, V item) {
+    public static <T, V extends T> V register(Object id, V item) {
         if (item instanceof Tile) {
-            tileRegistry.put(id, (Tile) item);
+            tileRegistry.put((String) id, (Tile) item);
         } else if (item instanceof Action) {
-            actionsRegistry.put(id, (Action) item);
+            actionsRegistry.put((String) id, (Action) item);
         } else if (item instanceof Entity) {
-            entitiesRegistry.put(id, (Entity) item);
+            entitiesRegistry.put((String) id, (Entity) item);
         } else if (item instanceof Item) {
-            itemsRegistry.put(id, (Item) item);
+            itemsRegistry.put((String) id, (Item) item);
+        } else if (item instanceof Biome) {
+        	biomeRegistry.put((Integer) id, (Biome) item);
         } else {
             System.out.println("Could not find the corresponding registry for " + id);
         }
@@ -88,4 +92,10 @@ public class Registry {
     public static HashMap<String, Entity> getEntitiesRegistry() {
         return entitiesRegistry;
     }
+    
+    public static Biome getBiomeFromID(int biomeID) {
+    	return biomeRegistry.get(biomeID);
+    }
+    
+   
 }

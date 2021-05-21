@@ -9,6 +9,8 @@ import io.innocent.dream.item.Items;
 import io.innocent.dream.util.DisplayManager;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -135,6 +137,17 @@ public abstract class AbstractInventory extends ArrayList<Slot> {
                 break;
             }
         }
+    }
+    
+    public JSONArray toJSONArray() {
+    	JSONArray array = new JSONArray();
+    	for (Slot s : this) {
+    		JSONObject o = new JSONObject();
+    		o.put("item", s.getItem().getName());
+    		o.put("count", s.getCount());
+    		array.add(o);
+    	}
+    	return array;
     }
 
 }

@@ -22,7 +22,7 @@ public class ItemEntity extends Entity {
     protected int count;
 
     public ItemEntity(String itemName, int count, Vector2f pos) {
-        super(new Texture("assets/items/" + itemName + ".png"));
+        super(new Texture("assets/items/" + itemName + ".png"), "0");
         this.itemName = itemName;
         this.count = count;
         this.position = pos;

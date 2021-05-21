@@ -1,5 +1,6 @@
 package io.innocent.dream.worldBuilder;
 
+import io.innocent.dream.InnocentDream;
 import io.innocent.dream.entities.Entities;
 import io.innocent.dream.entities.Entity;
 import io.innocent.dream.entities.EntityWithHP;
@@ -15,6 +16,7 @@ import org.json.simple.parser.JSONParser;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.zip.GZIPOutputStream;
 
 public class WorldSaver {
 
@@ -143,7 +145,26 @@ public class WorldSaver {
             }
             tiles.add(Y);
         }
+        try {
+			DataOutputStream dos = new DataOutputStream(new GZIPOutputStream(new FileOutputStream(new File(InnocentDream.path + "\\worldSaveTest.id"))));
+			dos.write(objectToByteArray(WORLD));
+			dos.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
         return tiles;
+    }
+    
+    private static byte[] objectToByteArray(Object object) {
+    	try {
+    		ByteArrayOutputStream out = new ByteArrayOutputStream();
+    		ObjectOutputStream os = new ObjectOutputStream(out);
+    		os.writeObject(object);
+    		return out.toByteArray();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    	return null;
     }
 
 }

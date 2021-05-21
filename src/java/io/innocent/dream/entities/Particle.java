@@ -16,7 +16,7 @@ public class Particle extends Entity {
     private int i = 0;
 
     public Particle(Vector2f position, Texture texture, Vector2f size, int lifespan) {
-        super(texture);
+        super(texture, "0");
         this.position = position;
         this.texture = texture;
         this.size = size;

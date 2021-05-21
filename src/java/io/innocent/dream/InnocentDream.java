@@ -8,11 +8,15 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
+import de.jcm.discordgamesdk.Core;
+import de.jcm.discordgamesdk.CreateParams;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.IntBuffer;
 import java.util.Map;
+import java.util.Random;
 
 import static io.innocent.dream.util.DisplayManager.win;
 import static org.lwjgl.glfw.GLFW.*;
@@ -39,6 +43,38 @@ public class InnocentDream implements Runnable {
 
     public static float width = 256;
     public static float maxScroll = 768;
+    
+    public static String generateUID(Random random) {
+    	random = new Random();
+    	String uid = "";
+    	char[] hex = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+    	
+    	for (int i = 0; i < 8; i++) {
+    		int x = random.nextInt(16);
+    		uid += hex[x];
+    	}
+    	uid += '-';
+    	for (int i = 0; i < 4; i++) {
+    		int x = random.nextInt(16);
+    		uid += hex[x];
+    	}
+    	uid += '-';
+    	for (int i = 0; i < 4; i++) {
+    		int x = random.nextInt(16);
+    		uid += hex[x];
+    	}
+    	uid += '-';
+    	for (int i = 0; i < 4; i++) {
+    		int x = random.nextInt(16);
+    		uid += hex[x];
+    	}
+    	uid += '-';
+    	for (int i = 0; i < 12; i++) {
+    		int x = random.nextInt(16);
+    		uid += hex[x];
+    	}
+    	return uid;
+    }
 
     public static void calculateHeightScale() {
         IntBuffer buffer = BufferUtils.createIntBuffer(1);

@@ -1,10 +1,13 @@
 package io.innocent.dream.inventory;
 
+import java.io.Serializable;
+
 import io.innocent.dream.item.Item;
 
-public class Slot {
+public class Slot implements Serializable {
 
-    private Item item;
+	private static final long serialVersionUID = -3496862584765003573L;
+	private Item item;
     private int count;
 
     private Slot(Item item, int count) {

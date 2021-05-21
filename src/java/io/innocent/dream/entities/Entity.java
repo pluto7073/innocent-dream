@@ -10,9 +10,11 @@ public abstract class Entity {
 
     protected Texture texture;
     protected Vector2f position;
+    protected String uid;
 
-    public Entity(Texture texture) {
+    public Entity(Texture texture, String uid) {
         this.texture = texture;
+        this.uid = uid;
     }
 
     public Texture getTexture() {
@@ -25,6 +27,10 @@ public abstract class Entity {
 
     public Vector2f getPosition() {
         return position;
+    }
+    
+    public String getUID() {
+    	return uid;
     }
 
     public abstract void render();

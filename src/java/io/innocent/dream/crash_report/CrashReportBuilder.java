@@ -23,6 +23,18 @@ public class CrashReportBuilder {
         }
         return stackTraceBuilder.toString();
     }
+    
+    protected String createStackTrace(String message) {
+        StringBuilder stackTraceBuilder = new StringBuilder();
+        err.println(throwable.toString());
+        stackTraceBuilder.append(message).append(": ").append(throwable).append("\n");
+        StackTraceElement[] elements = throwable.getStackTrace();
+        for (StackTraceElement element : elements) {
+            err.println("\t" + element);
+            stackTraceBuilder.append("\t").append(element).append("\n");
+        }
+        return stackTraceBuilder.toString();
+    }
 
     protected String getSystemInformation() {
         StringBuilder informationBuilder = new StringBuilder();

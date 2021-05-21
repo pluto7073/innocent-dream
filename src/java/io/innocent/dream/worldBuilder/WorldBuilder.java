@@ -1,6 +1,9 @@
 package io.innocent.dream.worldBuilder;
 
 import io.innocent.dream.InnocentDream;
+import io.innocent.dream.registry.Registry;
+import io.innocent.dream.worldBuilder.biomes.Biome;
+import io.innocent.dream.worldBuilder.biomes.Biomes;
 
 import java.io.File;
 import java.util.Random;
@@ -41,8 +44,8 @@ public class WorldBuilder {
 
     private static float getHeight(int x) {
         WORLD_GENERATION_RANDOM.setSeed(x * 23489 + WORLD_SEED);
-        float result = WORLD_GENERATION_RANDOM.nextFloat() * 8;
-        return result - 8;
+        float result = WORLD_GENERATION_RANDOM.nextFloat() * 16;
+        return (result - 8) + world.getBiomeAtCoordinate(x).getNaturalHeight();
     }
 
     private static float getAverageHeight(int x) {
@@ -56,11 +59,59 @@ public class WorldBuilder {
         float center = getAverageHeight(x);
         return (sides + center) / 2f;
     }
-
-    private static float getFinalHeight(int x) {
-        float sides = (getSmoothHeight(x - 1) + getSmoothHeight(x + 1)) / 2f;
-        float center = getSmoothHeight(x);
-        return (sides + center) / 2f;
+    
+    private static float generateInterpolatedNoise(int x) {
+    	int intX = (int) x;
+    	float fracX = x - intX;
+    	float v1 = getSmoothHeight(intX);
+    	float v2 = getSmoothHeight(intX + 1);
+    	float v3 = getSmoothHeight(intX - 1);
+    	float i1 = interpolate(v1, v2, fracX);
+    	float i2 = interpolate(v3, v1, fracX);
+    	return interpolate(i1, i2, fracX);
+    }
+    
+    private static float interpolate(float a, float b, float blend) {
+    	double theta = blend * Math.PI;
+    	float f = (float) (1f - Math.cos(theta)) * 0.5f;
+    	return a * (1f - f) + b * f;
+    }
+    
+    private static void generateBiomeMap() {
+    	boolean canGenerateMountains = true;
+    	for (int x = WorldTileManager.MIN_X; x < WorldTileManager.MAX_X + 1; x++) {
+    		try {
+    			if (world.getBiomeAtCoordinate(x) == Biomes.MOUNTAINS) continue;
+    		} catch (NullPointerException ignored) {}
+    		WORLD_GENERATION_RANDOM.setSeed(x * 38273 + WORLD_SEED);
+    		int chance = WORLD_GENERATION_RANDOM.nextInt() % 50;
+    		if ((chance == 1) && canGenerateMountains) {
+    			canGenerateMountains = false;
+    			for (int i = -5; i < 5; i++) {
+    				WorldTileManager.setBiomeAtPosition(Biomes.MOUNTAINS, x + i);
+    			}
+    		} else {
+    			WorldTileManager.setBiomeAtPosition(Biomes.DEFAULT, x);
+    		}
+    	}
+    }
+    
+    private static void generateHeightMap() {
+    	for (int x = WorldTileManager.MIN_X; x < WorldTileManager.MAX_X + 1; x++) {
+            int y = (int) generateInterpolatedNoise(x);
+            Biome biome = world.getBiomeAtCoordinate(x);
+            WorldTileManager.setTileAtPos(Registry.getTileName(biome.getSurfaceTile()), x, y);
+            int i = 0;
+            while (y > WorldTileManager.MIN_Y) {
+                y -= 1;
+                i += 1;
+                if (i > 3) {
+                    WorldTileManager.setTileAtPos(Registry.getTileName(biome.getBaseStoneTile()), x, y);
+                } else {
+                    WorldTileManager.setTileAtPos(Registry.getTileName(biome.getUnderTile()), x, y);
+                }
+            }
+        }
     }
 
     public static void generateWorld(int worldInt) {
@@ -70,21 +121,8 @@ public class WorldBuilder {
                 WORLD_DATA[x + WorldTileManager.MAX_X + 1][y + WorldTileManager.MAX_Y + 1] = pos;
             }
         }
-
-        for (int x = WorldTileManager.MIN_X; x < WorldTileManager.MAX_X + 1; x++) {
-            int y = (int) getFinalHeight(x);
-            WorldTileManager.setTileAtPos("grass", x, y);
-            int i = 0;
-            while (y > WorldTileManager.MIN_Y) {
-                y -= 1;
-                i += 1;
-                if (i > 3) {
-                    WorldTileManager.setTileAtPos("stone", x, y);
-                } else {
-                    WorldTileManager.setTileAtPos("dirt", x, y);
-                }
-            }
-        }
+        generateBiomeMap();
+        generateHeightMap();
         world.createNewWorld(new File(InnocentDream.path + "\\worlds\\World" + worldInt));
     }
 
